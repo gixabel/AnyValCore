@@ -1,5 +1,7 @@
 ![AnyValCore](AnyValCore.png "Any value Core")
 
+[![Build status](https://dev.azure.com/gixabel0908/AnyValCore/_apis/build/status/AnyValCore-CI)](https://dev.azure.com/gixabel0908/AnyValCore/_build/latest?definitionId=-1)
+
 **AnyValCore** is just a class with several static methods that I use whenver I need a random value such a string, a date, a positive integer, etc.
 
 Usage is simple: 

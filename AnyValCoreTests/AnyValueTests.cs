@@ -212,5 +212,16 @@ namespace AnyValCoreTests
             alphaNumericReturned.Should().MatchRegex("^[a-zA-Z0-9]*");
             Console.WriteLine(alphaNumericReturned);
         }
+
+        [TestMethod]
+        public void GivenAnyWhenEnumValueOfThenEnumValueReturned()
+        {
+            var enumValue = AnyVal.OfEnum<TestEnum>();
+            ((int) enumValue).Should().BeGreaterOrEqualTo((int) TestEnum.First);
+            ((int) enumValue).Should().BeLessOrEqualTo((int) TestEnum.Third);
+            Console.WriteLine(enumValue.ToString());
+        }
+
+        public enum TestEnum { First = 1, Second, Third };
     }
 }

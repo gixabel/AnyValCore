@@ -239,5 +239,15 @@ namespace AnyValCore
         /// </summary>
         /// <returns>Bool</returns>
         public static bool Bool() => Randomizer.NextDouble() >= 0.5;
+
+        /// <summary>
+        /// Generates a random value of an enum
+        /// </summary>
+        /// <returns>Item of T</returns>
+        public static T OfEnum<T>() where T : Enum
+        {
+            var value = Enum.GetValues(typeof(T));
+            return (T) value.GetValue(Randomizer.Next(value.Length));
+        }
     }
 }

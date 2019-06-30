@@ -244,7 +244,7 @@ namespace AnyValCore
         /// Generates a random value of an enum
         /// </summary>
         /// <returns>Item of T</returns>
-        public static T OfEnum<T>() where T : Enum
+        public static T OfEnum<T>()
         {
             var value = Enum.GetValues(typeof(T));
             return (T) value.GetValue(Randomizer.Next(value.Length));

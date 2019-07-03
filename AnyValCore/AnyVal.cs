@@ -249,5 +249,15 @@ namespace AnyValCore
             var value = Enum.GetValues(typeof(T));
             return (T) value.GetValue(Randomizer.Next(value.Length));
         }
+
+        /// <summary>
+        /// Generates a random value of an enum, except the first item
+        /// </summary>
+        /// <returns>Item of T</returns>
+        public static T OfEnumExceptFirst<T>()
+        {
+            var value = Enum.GetValues(typeof(T));
+            return (T) value.GetValue(Randomizer.Next(value.Length - 1) + 1);
+        }
     }
 }

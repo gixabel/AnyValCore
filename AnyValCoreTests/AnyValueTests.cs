@@ -222,6 +222,17 @@ namespace AnyValCoreTests
             Console.WriteLine(enumValue.ToString());
         }
 
-        public enum TestEnum { First = 1, Second, Third };
+        [TestMethod]
+        public void GivenAnyWhenEnumValueOfExceptFirstThenEnumValueReturned()
+        {
+            for (var tries = 0; tries < 20; tries++)
+            {
+                var enumValue = AnyVal.OfEnumExceptFirst<TestEnum>();
+                enumValue.Should().NotBe(TestEnum.First);
+                Console.WriteLine(enumValue.ToString());
+            }
+        }
+
+        public enum TestEnum { First = 10, Second, Third };
     }
 }

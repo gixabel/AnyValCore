@@ -32,5 +32,7 @@ Current available values are:
 * Int32(),
 * Paragraphs(int maximumLength),
 * AddressString(),
-* Bool().
+* Bool(),
+* OfEnum&lt;T&gt;
+* OfEnumExceptFirst&lt;T&gt;.
 

@@ -17,6 +17,14 @@ namespace AnyValCoreTests
         }
 
         [TestMethod]
+        public void GivenAnyWhenNegativeIntegerThenNegativeIntegerReturned()
+        {
+            var negativeInt = AnyVal.NegativeInt32();
+            negativeInt.Should().BeLessOrEqualTo(0);
+            Console.WriteLine(negativeInt);
+        }
+
+        [TestMethod]
         public void GivenAnyWhenPositiveIntegerMaxThenPositiveIntegerReturned()
         {
             const int maxValue = 50;
@@ -24,6 +32,16 @@ namespace AnyValCoreTests
             positiveInt.Should().BeLessOrEqualTo(maxValue);
             positiveInt.Should().BeGreaterOrEqualTo(0);
             Console.WriteLine(positiveInt);
+        }
+
+        [TestMethod]
+        public void GivenAnyWhenNegativeIntegerMaxThenNegativeIntegerReturned()
+        {
+            const int minValue = -50;
+            var negativeInt = AnyVal.NegativeInt32(minValue);
+            negativeInt.Should().BeLessOrEqualTo(0);
+            negativeInt.Should().BeGreaterOrEqualTo(minValue);
+            Console.WriteLine(negativeInt);
         }
 
         [TestMethod]

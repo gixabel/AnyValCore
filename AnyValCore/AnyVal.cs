@@ -19,6 +19,12 @@ namespace AnyValCore
         public static int PositiveInt32() => Randomizer.Next(int.MaxValue);
 
         /// <summary>
+        /// Gets a negative integer, starting from the maximum possible value to zero
+        /// </summary>
+        /// <returns>Integer</returns>
+        public static int NegativeInt32() => Randomizer.Next(int.MaxValue) * -1;
+
+        /// <summary>
         /// Given a max value, gets a random positive integer
         /// </summary>
         /// <param name="maximumValue">Maximum value</param>
@@ -26,10 +32,17 @@ namespace AnyValCore
         public static int PositiveInt32(int maximumValue) => Randomizer.Next(Math.Abs(maximumValue));
 
         /// <summary>
+        /// Given a min value, gets a random negative integer
+        /// </summary>
+        /// <param name="minimumValue">Minimum value</param>
+        /// <returns>Random negative integer</returns>
+        public static int NegativeInt32(int minimumValue) => Randomizer.Next(Math.Abs(minimumValue)) * -1;
+
+        /// <summary>
         /// Given two values, gets a random positive value in between
         /// </summary>
-        /// <param name="minimumValue">start range</param>
-        /// <param name="maximumValue">End range</param>
+        /// <param name="minimumValue">Minimum value</param>
+        /// <param name="maximumValue">Maximum value</param>
         /// <returns></returns>
         public static int PositiveInt32(int minimumValue, int maximumValue)
         {
@@ -40,6 +53,23 @@ namespace AnyValCore
                 : startValue > endValue
                     ? Randomizer.Next(startValue - endValue) + endValue
                     : Randomizer.Next(endValue - startValue) + startValue;
+        }
+
+        /// <summary>
+        /// Given two values, gets a random negative value in between
+        /// </summary>
+        /// <param name="minimumValue">Minimum value</param>
+        /// <param name="maximumValue">Maximum value</param>
+        /// <returns></returns>
+        public static int NegativeInt32(int minimumValue, int maximumValue)
+        {
+            var startValue = Math.Abs(minimumValue);
+            var endValue = Math.Abs(maximumValue);
+            return startValue == endValue
+                ? startValue
+                : startValue > endValue
+                    ? (Randomizer.Next(startValue - endValue) + endValue) * -1
+                    : (Randomizer.Next(endValue - startValue) + startValue) * -1;
         }
 
         /// <summary>

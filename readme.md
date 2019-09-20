@@ -20,6 +20,8 @@ Current available values are:
 * StringLowerCase(int size),
 * String(),
 * String(int size),
+* StringWithSingleQuotes(),
+* StringWithSingleQuotes(int size)
 * Alphanumeric(),
 * Alphanumeric(int size),
 * Decimal(),

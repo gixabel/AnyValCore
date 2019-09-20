@@ -125,6 +125,34 @@ namespace AnyValCoreTests
         }
 
         [TestMethod]
+        public void GivenAnyAndSizeWhenStringWithSingleQuotesThenStringWithQuotesReturned()
+        {
+            const int maxLength = 120;
+            var alpha = AnyVal.StringWithSingleQuotes(maxLength);
+            alpha.Length.Should().Be(maxLength);
+            alpha.Should().NotBeNullOrEmpty();
+            alpha.Should().Contain("\'");
+        }
+
+        [TestMethod]
+        public void GivenAnyAndSmallSizeWhenStringWithSingleQuotesThenStringWithQuotesReturned()
+        {
+            const int maxLength = 2;
+            var alpha = AnyVal.StringWithSingleQuotes(maxLength);
+            alpha.Length.Should().Be(maxLength);
+            alpha.Should().NotBeNullOrEmpty();
+            alpha.Should().Contain("\'");
+        }
+
+        [TestMethod]
+        public void GivenAnyAndWhenStringWithSingleQuotesThenStringWithQuotesReturned()
+        {
+            var alpha = AnyVal.StringWithSingleQuotes();
+            alpha.Should().NotBeNullOrEmpty();
+            alpha.Should().Contain("\'");
+        }
+
+        [TestMethod]
         public void GivenAnyWhenFloatThenFloatReturned()
         {
             var floatVal = AnyVal.Decimal();
@@ -146,8 +174,8 @@ namespace AnyValCoreTests
         {
             var dateVal = AnyVal.DateTime();
             var thisYear = DateTime.Now.Date.Year;
-            dateVal.Should().BeAfter(new DateTime(thisYear - 20, 1, 1));
-            dateVal.Should().BeBefore(new DateTime(thisYear + 20, 12, 31));
+            dateVal.Should().BeAfter(new DateTime(thisYear - 25, 1, 1));
+            dateVal.Should().BeBefore(new DateTime(thisYear + 25, 12, 31));
             Console.WriteLine(dateVal);
         }
 
@@ -155,14 +183,6 @@ namespace AnyValCoreTests
         public void GivenAnyWhenEmailStringThenEmailReturned()
         {
             var email = AnyVal.EmailString();
-            email.Should().MatchRegex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            Console.WriteLine(email);
-        }
-
-        [TestMethod]
-        public void GivenAnyWhenEmailThenEmailReturned()
-        {
-            var email = new AnyVal().Email();
             email.Should().MatchRegex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
             Console.WriteLine(email);
         }
@@ -209,7 +229,7 @@ namespace AnyValCoreTests
         public void GivenAnyWhenAddressThenAddressReturned()
         {
             var addressReturned = AnyVal.AddressString();
-            addressReturned.Should().MatchRegex("^[0-9]{1,4} [a-zA-Z]{4,10} [a-zA-Z]{2}$");
+            addressReturned.Should().MatchRegex("^[0-9]{1,4} [a-zA-Z]{8,16} [a-zA-Z]{2}$");
             Console.WriteLine(addressReturned);
         }
 

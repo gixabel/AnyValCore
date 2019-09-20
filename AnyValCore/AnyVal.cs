@@ -10,6 +10,7 @@ namespace AnyValCore
         private const string UpDownCharList = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private const string UpDownNumberCharList = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         private const string EndOfLineDot = ".\r\n";
+        private const char SingleQuoteCharacter = '\'';
         private static readonly Random Randomizer = new Random(Environment.TickCount);
 
         /// <summary>
@@ -91,7 +92,7 @@ namespace AnyValCore
             return
                 new string(DownCharList
                     .Select(c => DownCharList[Randomizer.Next(DownCharList.Length)])
-                    .Take(Randomizer.Next(16) + 4)
+                    .Take(Randomizer.Next(24) + 4)
                     .ToArray());
         }
 
@@ -116,7 +117,7 @@ namespace AnyValCore
         /// <returns>Random string</returns>
         public static string String()
         {
-            var totalLength = Randomizer.Next(16) + 4;
+            var totalLength = Randomizer.Next(24) + 4;
             return new string(UpDownNumberCharList
                 .Select(c => UpDownCharList[Randomizer.Next(UpDownCharList.Length)])
                 .Take(totalLength)
@@ -139,12 +140,42 @@ namespace AnyValCore
         }
 
         /// <summary>
+        /// Given a length, returns a random mixed case string with one or more single quotes
+        /// </summary>
+        /// <param name="size">String length</param>
+        /// <returns>Random string</returns>
+        public static string StringWithSingleQuotes(int size)
+        {
+            var result = string.Empty;
+            while (result.Length < size)
+            {
+                if (result.Length + 1 == size && !result.Contains(SingleQuoteCharacter))
+                {
+                    result += SingleQuoteCharacter;
+                }
+                else
+                {
+                    result += Randomizer.Next(6) % 5 == 1
+                        ? SingleQuoteCharacter
+                        : UpDownCharList[Randomizer.Next(UpDownCharList.Length)];
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Given a length, returns a random mixed case string with one or more single quotes
+        /// </summary>
+        /// <returns>Random string</returns>
+        public static string StringWithSingleQuotes() => StringWithSingleQuotes(24);
+
+        /// <summary>
         /// Gets a random mixed case and numbers string with a variable, no more than 20 characters long string
         /// </summary>
         /// <returns>Random string</returns>
         public static string Alphanumeric()
         {
-            var totalLength = Randomizer.Next(16) + 4;
+            var totalLength = Randomizer.Next(24) + 4;
             return new string(UpDownNumberCharList
                 .Select(c => UpDownCharList[Randomizer.Next(UpDownCharList.Length)])
                 .Take(totalLength)
@@ -186,7 +217,7 @@ namespace AnyValCore
         public static DateTime DateTime()
         {
             var thisYear = System.DateTime.Now.Year;
-            var result = new DateTime(Randomizer.Next(thisYear - 20, thisYear + 19), 1, 1);
+            var result = new DateTime(Randomizer.Next(thisYear - 25, thisYear + 24), 1, 1);
             return result.AddDays(Randomizer.Next(365));
         }
 
@@ -197,7 +228,7 @@ namespace AnyValCore
         /// <returns>Random future date</returns>
         public static DateTime DateTimeAfter(DateTime anyDateTime)
         {
-            var result = anyDateTime.AddYears(Randomizer.Next(20));
+            var result = anyDateTime.AddYears(Randomizer.Next(25));
             return result.AddDays(Randomizer.Next(365));
         }
 
@@ -208,7 +239,7 @@ namespace AnyValCore
         /// <returns>Random past date</returns>
         public static DateTime DateTimeBefore(DateTime anyDateTime)
         {
-            var result = anyDateTime.AddYears(Randomizer.Next(19) * -1);
+            var result = anyDateTime.AddYears(Randomizer.Next(24) * -1);
             return result.AddDays(Randomizer.Next(365) * -1);
         }
 
@@ -217,9 +248,6 @@ namespace AnyValCore
         /// </summary>
         /// <returns>Random email</returns>
         public static string EmailString() => $"{StringLowerCase()}@{StringLowerCase()}.{StringLowerCase(3)}";
-
-        [Obsolete("Use EmailString instead")]
-        public string Email() => $"{StringLowerCase()}@{StringLowerCase()}.{StringLowerCase(3)}";
 
         /// <summary>
         /// Gets a random integer, can be positive or negative
@@ -262,7 +290,7 @@ namespace AnyValCore
         /// Generates an address
         /// </summary>
         /// <returns>String</returns>
-        public static string AddressString() => $"{PositiveInt32(9999)} {String(PositiveInt32(5, 10))} {String(2)}";
+        public static string AddressString() => $"{PositiveInt32(9999)} {String(PositiveInt32(8, 16))} {String(2)}";
 
         /// <summary>
         /// Generates a random boolean

@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>AnyValCore</id>
-    <version>2.2.0</version>
+    <version>3.0.0</version>
     <authors>Gixabel</authors>
     <owners>Gixabel</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Library with random values in different types</description>
     <releaseNotes>Fixed some random generation issues</releaseNotes>
-    <copyright>Copyright ©2018 Maia Sistemas</copyright>
+    <copyright></copyright>
     <tags>testing value types</tags>
 	<iconUrl>AnyValue.png</iconUrl>
     <dependencies>

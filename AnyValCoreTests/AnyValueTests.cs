@@ -81,10 +81,21 @@ namespace AnyValCoreTests
         {
             const int startValue = -100;
             const int endValue = -200;
-            var positiveRange = AnyVal.PositiveInt32(startValue, endValue);
-            positiveRange.Should().BeGreaterOrEqualTo(Math.Abs(startValue));
-            positiveRange.Should().BeLessOrEqualTo(Math.Abs(endValue));
-            Console.WriteLine(positiveRange);
+            var positiveValue = AnyVal.PositiveInt32(startValue, endValue);
+            positiveValue.Should().BeGreaterOrEqualTo(Math.Abs(startValue));
+            positiveValue.Should().BeLessOrEqualTo(Math.Abs(endValue));
+            Console.WriteLine(positiveValue);
+        }
+
+        [TestMethod]
+        public void GivenMinValueAndMaxValueWhenNegativeInt32ThenNegativeValueReturned()
+        {
+            const int startValue = -200;
+            const int endValue = -100;
+            var negativeValue = AnyVal.NegativeInt32(startValue, endValue);
+            negativeValue.Should().BeGreaterOrEqualTo(startValue);
+            negativeValue.Should().BeLessOrEqualTo(endValue);
+
         }
 
         [TestMethod]

@@ -13,7 +13,7 @@
     <PackageReleaseNotes>Ported AnyValue to .Net Core 3.0</PackageReleaseNotes>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <FileVersion>3.0.0.0</FileVersion>
-    <Version>3.1.0</Version>
+    <Version>9.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

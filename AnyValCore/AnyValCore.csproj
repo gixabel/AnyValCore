@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,20 +6,22 @@
     <Company>Maia Sistemas</Company>
     <Product>AnyValue</Product>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Copyright></Copyright>
-    <PackageIconUrl>AnyValCore.png</PackageIconUrl>
-    <PackageTags>testing value types</PackageTags>
     <Description>Library with random values in different types</Description>
-    <PackageReleaseNotes>Ported AnyValue to .Net Core 3.0</PackageReleaseNotes>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <FileVersion>3.0.0.0</FileVersion>
-    <Version>9.0.1</Version>
+    <PackageTags>testing value types</PackageTags>
+    <PackageIcon>AnyValCore.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/gixabel/AnyValCore</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Added PositiveInt32GreaterThanZero and DecimalGreaterThanZero. Random generation is now thread-safe.</PackageReleaseNotes>
+    <Version>9.1.0</Version>
+    <AssemblyVersion>9.1.0.0</AssemblyVersion>
+    <FileVersion>9.1.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="AnyValue.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="..\AnyValCore.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="..\readme.md" Pack="true" PackagePath="\" Visible="false" />
   </ItemGroup>
 
 </Project>

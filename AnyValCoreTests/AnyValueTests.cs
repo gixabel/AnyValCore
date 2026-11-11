@@ -1,7 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
 using AnyValCore;
+using Shouldly;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AnyValCoreTests;
 
@@ -11,14 +13,23 @@ public class AnyValueTests
     [TestMethod]
     public void GivenAnyWhenPositiveIntegerThenPositiveIntegerReturned()
     {
-        AnyVal.PositiveInt32().Should().BeGreaterOrEqualTo(0);
+        AnyVal.PositiveInt32().ShouldBeGreaterThanOrEqualTo(0);
         Console.WriteLine(AnyVal.PositiveInt32());
+    }
+
+    [TestMethod]
+    public void GivenAnyWhenPositiveInt32GreaterThanZeroThenPositiveIntegerReturned()
+    {
+        for (var count = 0; count < 500000; count++)
+        {
+            AnyVal.PositiveInt32GreaterThanZero().ShouldBeGreaterThan(0);
+        }
     }
 
     [TestMethod]
     public void GivenAnyWhenNegativeIntegerThenNegativeIntegerReturned()
     {
-        AnyVal.NegativeInt32().Should().BeLessOrEqualTo(0);
+        AnyVal.NegativeInt32().ShouldBeLessThanOrEqualTo(0);
         Console.WriteLine(AnyVal.NegativeInt32());
     }
 
@@ -27,8 +38,8 @@ public class AnyValueTests
     {
         const int maxValue = 50;
         var positiveInt = AnyVal.PositiveInt32(maxValue);
-        positiveInt.Should().BeLessOrEqualTo(maxValue);
-        positiveInt.Should().BeGreaterOrEqualTo(0);
+        positiveInt.ShouldBeLessThanOrEqualTo(maxValue);
+        positiveInt.ShouldBeGreaterThanOrEqualTo(0);
         Console.WriteLine(positiveInt);
     }
 
@@ -37,8 +48,8 @@ public class AnyValueTests
     {
         const int minValue = -50;
         var negativeInt = AnyVal.NegativeInt32(minValue);
-        negativeInt.Should().BeLessOrEqualTo(0);
-        negativeInt.Should().BeGreaterOrEqualTo(minValue);
+        negativeInt.ShouldBeLessThanOrEqualTo(0);
+        negativeInt.ShouldBeGreaterThanOrEqualTo(minValue);
         Console.WriteLine(negativeInt);
     }
 
@@ -48,8 +59,8 @@ public class AnyValueTests
         const int startValue = 1024;
         const int endValue = 2048;
         var positiveRange = AnyVal.PositiveInt32(startValue, endValue);
-        positiveRange.Should().BeGreaterOrEqualTo(startValue);
-        positiveRange.Should().BeLessOrEqualTo(endValue);
+        positiveRange.ShouldBeGreaterThanOrEqualTo(startValue);
+        positiveRange.ShouldBeLessThanOrEqualTo(endValue);
         Console.WriteLine(positiveRange);
     }
 
@@ -59,8 +70,8 @@ public class AnyValueTests
         const int startValue = 1024;
         const int endValue = -2048;
         var positiveRange = AnyVal.PositiveInt32(startValue, endValue);
-        positiveRange.Should().BeGreaterOrEqualTo(startValue);
-        positiveRange.Should().BeLessOrEqualTo(Math.Abs(endValue));
+        positiveRange.ShouldBeGreaterThanOrEqualTo(startValue);
+        positiveRange.ShouldBeLessThanOrEqualTo(Math.Abs(endValue));
         Console.WriteLine(positiveRange);
     }
 
@@ -69,7 +80,7 @@ public class AnyValueTests
     {
         const int startValue = -100;
         const int endValue = 100;
-        AnyVal.PositiveInt32(startValue, endValue).Should().Be(endValue);
+        AnyVal.PositiveInt32(startValue, endValue).ShouldBe(endValue);
         Console.WriteLine(AnyVal.PositiveInt32(startValue, endValue));
     }
 
@@ -79,8 +90,8 @@ public class AnyValueTests
         const int startValue = -100;
         const int endValue = -200;
         var positiveValue = AnyVal.PositiveInt32(startValue, endValue);
-        positiveValue.Should().BeGreaterOrEqualTo(Math.Abs(startValue));
-        positiveValue.Should().BeLessOrEqualTo(Math.Abs(endValue));
+        positiveValue.ShouldBeGreaterThanOrEqualTo(Math.Abs(startValue));
+        positiveValue.ShouldBeLessThanOrEqualTo(Math.Abs(endValue));
         Console.WriteLine(positiveValue);
     }
 
@@ -90,15 +101,15 @@ public class AnyValueTests
         const int startValue = -200;
         const int endValue = -100;
         var negativeValue = AnyVal.NegativeInt32(startValue, endValue);
-        negativeValue.Should().BeGreaterOrEqualTo(startValue);
-        negativeValue.Should().BeLessOrEqualTo(endValue);
+        negativeValue.ShouldBeGreaterThanOrEqualTo(startValue);
+        negativeValue.ShouldBeLessThanOrEqualTo(endValue);
 
     }
 
     [TestMethod]
     public void GivenAnyWhenPositiveLongThenPositiveLongReturned()
     {
-        AnyVal.PositiveInt64().Should().BeGreaterOrEqualTo(0);
+        AnyVal.PositiveInt64().ShouldBeGreaterThanOrEqualTo(0);
         Console.WriteLine(AnyVal.PositiveInt64());
     }
 
@@ -106,8 +117,8 @@ public class AnyValueTests
     public void GivenAnyWhenAlphaLowercaseThenAlphaLowerCaseReturned()
     {
         var alphaLowerCase = AnyVal.StringLowerCase();
-        alphaLowerCase.Should().NotBeNullOrEmpty();
-        alphaLowerCase.Should().MatchRegex("^[a-z]+$");
+        alphaLowerCase.ShouldNotBeNullOrEmpty();
+        alphaLowerCase.ShouldMatch("^[a-z]+$");
         Console.WriteLine(alphaLowerCase);
     }
 
@@ -115,8 +126,8 @@ public class AnyValueTests
     public void GivenAnyWhenAlphaThenAlphaReturned()
     {
         var alpha = AnyVal.String();
-        alpha.Should().NotBeNullOrEmpty();
-        alpha.Should().MatchRegex("^[a-zA-Z]+$");
+        alpha.ShouldNotBeNullOrEmpty();
+        alpha.ShouldMatch("^[a-zA-Z]+$");
         Console.WriteLine(alpha);
     }
 
@@ -125,9 +136,9 @@ public class AnyValueTests
     {
         const int maxLength = 120;
         var alpha = AnyVal.String(maxLength);
-        alpha.Length.Should().BeLessOrEqualTo(maxLength);
-        alpha.Should().NotBeNullOrEmpty();
-        alpha.Should().MatchRegex("^[a-zA-Z]{" + maxLength + "}$");
+        alpha.Length.ShouldBeLessThanOrEqualTo(maxLength);
+        alpha.ShouldNotBeNullOrEmpty();
+        alpha.ShouldMatch("^[a-zA-Z]{" + maxLength + "}$");
         Console.WriteLine(alpha);
     }
 
@@ -136,9 +147,9 @@ public class AnyValueTests
     {
         const int maxLength = 120;
         var alpha = AnyVal.StringWithSingleQuotes(maxLength);
-        alpha.Length.Should().Be(maxLength);
-        alpha.Should().NotBeNullOrEmpty();
-        alpha.Should().Contain("\'");
+        alpha.Length.ShouldBe(maxLength);
+        alpha.ShouldNotBeNullOrEmpty();
+        alpha.ShouldContain("\'");
     }
 
     [TestMethod]
@@ -146,24 +157,24 @@ public class AnyValueTests
     {
         const int maxLength = 2;
         var alpha = AnyVal.StringWithSingleQuotes(maxLength);
-        alpha.Length.Should().Be(maxLength);
-        alpha.Should().NotBeNullOrEmpty();
-        alpha.Should().Contain("\'");
+        alpha.Length.ShouldBe(maxLength);
+        alpha.ShouldNotBeNullOrEmpty();
+        alpha.ShouldContain("\'");
     }
 
     [TestMethod]
     public void GivenAnyAndWhenStringWithSingleQuotesThenStringWithQuotesReturned()
     {
         var alpha = AnyVal.StringWithSingleQuotes();
-        alpha.Should().NotBeNullOrEmpty();
-        alpha.Should().Contain("\'");
+        alpha.ShouldNotBeNullOrEmpty();
+        alpha.ShouldContain("\'");
     }
 
     [TestMethod]
     public void GivenAnyWhenFloatThenFloatReturned()
     {
         var floatVal = AnyVal.Decimal();
-        floatVal.Should().BeLessOrEqualTo(100);
+        floatVal.ShouldBeLessThanOrEqualTo(100);
         Console.WriteLine(floatVal);
     }
 
@@ -172,8 +183,17 @@ public class AnyValueTests
     {
         const int maxVal = 500;
         var floatVal = AnyVal.Decimal(maxVal);
-        floatVal.Should().BeLessOrEqualTo(maxVal);
+        floatVal.ShouldBeLessThanOrEqualTo(maxVal);
         Console.WriteLine(floatVal);
+    }
+
+    [TestMethod]
+    public void GivenAnyWhenDecimalGreaterThanZeroThenDecimalReturned()
+    {
+        for (var cycle = 1; cycle <= 2000; cycle++)
+        {
+            AnyVal.DecimalGreaterThanZero().ShouldBeGreaterThan(0);
+        }
     }
 
     [TestMethod]
@@ -181,15 +201,15 @@ public class AnyValueTests
     {
         var dateVal = AnyVal.DateTime();
         var thisYear = DateTime.Now.Date.Year;
-        dateVal.Should().BeAfter(new DateTime(thisYear - 25, 1, 1));
-        dateVal.Should().BeBefore(new DateTime(thisYear + 25, 12, 31));
+        dateVal.ShouldBeGreaterThan(new DateTime(thisYear - 25, 1, 1));
+        dateVal.ShouldBeLessThan(new DateTime(thisYear + 25, 12, 31));
         Console.WriteLine(dateVal);
     }
 
     [TestMethod]
     public void GivenAnyWhenEmailStringThenEmailReturned()
     {
-        AnyVal.EmailString().Should().MatchRegex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+        AnyVal.EmailString().ShouldMatch(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
         Console.WriteLine(AnyVal.EmailString());
     }
 
@@ -197,7 +217,7 @@ public class AnyValueTests
     public void GivenAnyWhenDateAfterThenDateAfterReturned()
     {
         var dateAfter = DateTime.Now;
-        AnyVal.DateTimeAfter(dateAfter).Should().BeAfter(dateAfter);
+        AnyVal.DateTimeAfter(dateAfter).ShouldBeGreaterThan(dateAfter);
         Console.WriteLine(AnyVal.DateTimeAfter(dateAfter));
     }
 
@@ -205,7 +225,7 @@ public class AnyValueTests
     public void GivenAnyWhenDateBeforeThenDateBeforeReturned()
     {
         var dateBefore = DateTime.Now;
-        AnyVal.DateTimeBefore(dateBefore).Should().BeBefore(dateBefore);
+        AnyVal.DateTimeBefore(dateBefore).ShouldBeLessThan(dateBefore);
         Console.WriteLine(AnyVal.DateTimeBefore(dateBefore));
     }
 
@@ -214,9 +234,9 @@ public class AnyValueTests
     {
         const int maximumLength = 500;
         var paragraphReturned = AnyVal.Paragraphs(maximumLength);
-        paragraphReturned.Length.Should().Be(maximumLength);
-        paragraphReturned.Should().Contain(" ");
-        paragraphReturned.Should().Contain(".\r\n");
+        paragraphReturned.Length.ShouldBe(maximumLength);
+        paragraphReturned.ShouldContain(" ");
+        paragraphReturned.ShouldContain(".\r\n");
         Console.WriteLine(paragraphReturned);
     }
 
@@ -224,14 +244,14 @@ public class AnyValueTests
     public void GivenAnyWhenShortParagraphThenParagraphReturned()
     {
         const int maximumLength = 1;
-        AnyVal.Paragraphs(maximumLength).Length.Should().Be(maximumLength);
+        AnyVal.Paragraphs(maximumLength).Length.ShouldBe(maximumLength);
         Console.WriteLine(AnyVal.Paragraphs(maximumLength));
     }
 
     [TestMethod]
     public void GivenAnyWhenAddressThenAddressReturned()
     {
-        AnyVal.AddressString().Should().MatchRegex("^[0-9]{1,4} [a-zA-Z]{8,16} [a-zA-Z]{2}$");
+        AnyVal.AddressString().ShouldMatch("^[0-9]{1,4} [a-zA-Z]{8,16} [a-zA-Z]{2}$");
         Console.WriteLine(AnyVal.AddressString());
     }
 
@@ -240,15 +260,15 @@ public class AnyValueTests
     {
         var size = AnyVal.PositiveInt32(32);
         var alphaNumericReturned = AnyVal.Alphanumeric(size);
-        alphaNumericReturned.Should().MatchRegex("^[a-zA-Z0-9]*");
-        alphaNumericReturned.Length.Should().Be(size);
+        alphaNumericReturned.ShouldMatch("^[a-zA-Z0-9]*");
+        alphaNumericReturned.Length.ShouldBe(size);
         Console.WriteLine(alphaNumericReturned);
     }
 
     [TestMethod]
     public void GivenAnyWhenAlphanumericThenAlphanumericReturned()
     {
-        AnyVal.Alphanumeric().Should().MatchRegex("^[a-zA-Z0-9]*");
+        AnyVal.Alphanumeric().ShouldMatch("^[a-zA-Z0-9]*");
         Console.WriteLine(AnyVal.Alphanumeric());
     }
 
@@ -256,37 +276,61 @@ public class AnyValueTests
     public void GivenAnyWhenEnumValueOfThenEnumValueReturned()
     {
         var enumValue = AnyVal.OfEnum<TestEnum>();
-        ((int) enumValue).Should().BeGreaterOrEqualTo((int) TestEnum.First);
-        ((int) enumValue).Should().BeLessOrEqualTo((int) TestEnum.Third);
+        ((int) enumValue).ShouldBeGreaterThanOrEqualTo((int) TestEnum.First);
+        ((int) enumValue).ShouldBeLessThanOrEqualTo((int) TestEnum.Third);
         Console.WriteLine(enumValue.ToString());
     }
 
     [TestMethod]
     public void GivenAnyWhenEnumValueOfExceptFirstThenEnumValueReturned()
     {
-        for (var tries = 0; tries < 20; tries++)
+        for (var tries = 0; tries < 200; tries++)
         {
             var enumValue = AnyVal.OfEnumExceptFirst<TestEnum>();
-            enumValue.Should().NotBe(TestEnum.First);
+            enumValue.ShouldNotBe(TestEnum.First);
             Console.WriteLine(enumValue.ToString());
         }
     }
 
     [TestMethod]
     public void WhenPositiveInt32TwiceThenValuesShouldBeDifferent() => 
-        AnyVal.PositiveInt32().Should().NotBe(AnyVal.PositiveInt32());
+        AnyVal.PositiveInt32().ShouldNotBe(AnyVal.PositiveInt32());
 
     [TestMethod]
     public void WhenNegativeInt32TwiceThenValuesShouldBeDifferent() => 
-        AnyVal.NegativeInt32().Should().NotBe(AnyVal.NegativeInt32());
+        AnyVal.NegativeInt32().ShouldNotBe(AnyVal.NegativeInt32());
 
     [TestMethod]
     public void WhenPositiveInt64TwiceThenValuesShouldBeDifferent() => 
-        AnyVal.PositiveInt64().Should().NotBe(AnyVal.PositiveInt64());
+        AnyVal.PositiveInt64().ShouldNotBe(AnyVal.PositiveInt64());
 
     [TestMethod]
     public void WhenStringLowerCaseTwiceThenValuesShouldBeDifferent() => 
-        AnyVal.StringLowerCase().Should().NotBe(AnyVal.StringLowerCase());
+        AnyVal.StringLowerCase().ShouldNotBe(AnyVal.StringLowerCase());
+
+    // Guards thread-safety of the shared generator. System.Random is not
+    // thread-safe: concurrent calls corrupt its internal state and every later call
+    // returns 0. Consumers run NUnit [Parallelizable] fixtures, so this is a real
+    // path. A plain loop cannot catch it - the calls have to actually overlap.
+
+    [TestMethod]
+    public void GivenParallelCallersWhenIntegersRequestedThenGeneratorStaysHealthy()
+    {
+        // A legitimate zero from PositiveInt32() has odds of 1 in int.MaxValue,
+        // so a single zero here means the generator was corrupted.
+        const int iterations = 200000;
+        var zeroCount = 0;
+
+        Parallel.For(0, iterations, _ =>
+        {
+            if (AnyVal.PositiveInt32() == 0)
+            {
+                Interlocked.Increment(ref zeroCount);
+            }
+        });
+
+        zeroCount.ShouldBe(0);
+    }
 
     public enum TestEnum { First = 10, Second, Third }
 }

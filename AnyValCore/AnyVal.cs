@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace AnyValCore
 {
@@ -11,13 +12,29 @@ namespace AnyValCore
         private const string UpDownNumberCharList = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         private const string EndOfLineDot = ".\r\n";
         private const char SingleQuoteCharacter = '\'';
-        private static readonly Random Randomizer = new Random(Environment.TickCount);
+        // One Random per thread. System.Random is not thread-safe: concurrent calls
+        // corrupt its internal state and it then returns 0 forever. Consumers run
+        // NUnit [Parallelizable] fixtures, so that is a real path, not a theoretical one.
+        // The seed is incremented per thread because threads created in the same clock
+        // tick would otherwise share a seed and produce identical "random" sequences.
+        private static int _seed = Environment.TickCount;
+
+        private static readonly ThreadLocal<Random> ThreadRandomizer =
+            new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref _seed)));
+
+        private static Random Randomizer => ThreadRandomizer.Value;
 
         /// <summary>
         /// Gets a positive integer, starting from zero to the maximum possible value
         /// </summary>
         /// <returns>Integer</returns>
         public static int PositiveInt32() => Randomizer.Next(int.MaxValue);
+
+        /// <summary>
+        /// Gets a positive, greater than zero integer
+        /// </summary>
+        /// <returns>Integer</returns>
+        public static int PositiveInt32GreaterThanZero() => Randomizer.Next(int.MaxValue - 1) + 1;
 
         /// <summary>
         /// Gets a negative integer, starting from the maximum possible value to zero
@@ -211,13 +228,19 @@ namespace AnyValCore
         public static decimal Decimal(int maximumValue) => (decimal)Randomizer.NextDouble() * maximumValue;
 
         /// <summary>
-        /// Gets a random date between year 1990 and 2040
+        /// Gets a random decimal value, never zero
+        /// </summary>
+        /// <returns>Random decimal</returns>
+        public static decimal DecimalGreaterThanZero() => (decimal)Randomizer.NextDouble() * Randomizer.Next(99) + 0.1m;
+
+        /// <summary>
+        /// Gets a random date between today minus 25 years and today plus 25 years
         /// </summary>
         /// <returns>Random date</returns>
         public static DateTime DateTime()
         {
             var thisYear = System.DateTime.Now.Year;
-            var result = new DateTime(Randomizer.Next(thisYear - 25, thisYear + 24), 1, 1);
+            var result = new DateTime(Randomizer.Next(thisYear - 25, thisYear + 25), 1, 1);
             return result.AddDays(Randomizer.Next(365));
         }
 
